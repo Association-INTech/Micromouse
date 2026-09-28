@@ -1,2 +1,5 @@
-# Micromouse
-This repository contains all project files for our Micromouse robots, including KiCad PCBs, ROS 2 code (C++/Python), Gazebo simulation setups, and Docker configurations.
+## Troubleshooting
+
+### clangd
+
+To make clangd work with arm-none-eabi you need to add --query-driver=/usr/bin/arm-none-eabi* to your clangd command. Check how to do that on your specific IDE.
