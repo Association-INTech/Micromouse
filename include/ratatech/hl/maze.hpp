@@ -2,14 +2,20 @@
 
 #include <array>
 #include <cstddef>
+#include <cstdio>
 
 namespace ratatech::hl {
 
-enum class Direction { Left, Right, Bottom, Up };
+enum class Direction { Left = 0, Right, Down, Up };
+
+constexpr std::array<Direction, 4> all_directions{
+    Direction::Left, Direction::Right, Direction::Down, Direction::Up};
+
+std::pair<ssize_t, ssize_t> direction_to_delta(Direction direction);
 
 class Maze {
   public:
-    static constexpr size_t size{16};
+    static constexpr size_t maze_size{16};
 
     explicit Maze();
 
@@ -18,11 +24,11 @@ class Maze {
 
   private:
     struct Cell {
-        bool righ_wall;
+        bool right_wall;
         bool bottom_wall;
     };
 
-    std::array<std::array<Cell, size>, size> data_;
+    std::array<std::array<Cell, maze_size>, maze_size> data_;
 };
 
 } // namespace ratatech::hl

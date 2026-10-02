@@ -2,6 +2,7 @@
 
 #include "ratatech/hl/maze.hpp"
 #include <cstddef>
+#include <unordered_set>
 #include <vector>
 
 namespace ratatech::hl {
@@ -11,6 +12,8 @@ class Graph {
     struct Node {
         size_t i;
         size_t j;
+
+        bool operator==(const Node &other) const;
     };
 
     explicit Graph(const Maze &maze);
@@ -18,10 +21,20 @@ class Graph {
     std::vector<std::pair<Node, int>> neighbors(const Node &node) const;
 
     std::vector<Node> shortest_path(const Node &start,
-                                    const std::vector<Node> &end) const;
+                                    const std::unordered_set<Node> &end) const;
 
   private:
     const Maze &maze_;
 };
 
 } // namespace ratatech::hl
+
+namespace std {
+
+template <> struct hash<ratatech::hl::Graph::Node> {
+    bool operator()(const ratatech::hl::Graph::Node &node) {
+        return node.i * ratatech::hl::Maze::maze_size + node.j;
+    }
+};
+
+} // namespace std
