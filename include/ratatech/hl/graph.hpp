@@ -13,7 +13,7 @@ class Graph {
         size_t i;
         size_t j;
 
-        bool operator==(const Node &other) const;
+        bool operator==(const Node &other) const = default;
     };
 
     explicit Graph(const Maze &maze);
