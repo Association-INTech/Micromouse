@@ -32,7 +32,7 @@ class Graph {
 namespace std {
 
 template <> struct hash<ratatech::hl::Graph::Node> {
-    bool operator()(const ratatech::hl::Graph::Node &node) {
+    size_t operator()(const ratatech::hl::Graph::Node &node) const noexcept {
         return node.i * ratatech::hl::Maze::maze_size + node.j;
     }
 };
