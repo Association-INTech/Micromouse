@@ -5,10 +5,10 @@ namespace ratatech::hl {
 
 std::pair<ssize_t, ssize_t> direction_to_delta(Direction direction) {
     constexpr std::array<std::pair<ssize_t, ssize_t>, 4> deltas{{
-        {0, -1},
-        {0, +1},
-        {-1, 0},
-        {+1, 0},
+        {0, +1}, // Right
+        {+1, 0}, // Down
+        {0, -1}, // Left
+        {-1, 0}, // Up
     }};
 
     return deltas[static_cast<size_t>(direction)];

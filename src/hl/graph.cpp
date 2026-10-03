@@ -2,6 +2,8 @@
 #include "ratatech/hl/maze.hpp"
 #include <algorithm>
 #include <limits>
+#include <optional>
+#include <print>
 #include <queue>
 #include <unordered_map>
 #include <utility>
@@ -17,14 +19,14 @@ Graph::neighbors(const Node &node) const {
     for (auto dir : all_directions) {
         auto [delta_i, delta_j] = direction_to_delta(dir);
 
-        if (maze_.get_wall(node.i, node.j, dir))
+        if (!maze_.get_wall(node.i, node.j, dir))
             neighbors.push_back({{node.i + delta_i, node.j + delta_j}, 1});
     }
 
     return neighbors;
 }
 
-std::vector<Graph::Node>
+std::optional<std::vector<Graph::Node>>
 Graph::shortest_path(const Node &start,
                      const std::unordered_set<Node> &end) const {
     using Entry = std::pair<Node, int>;
@@ -64,9 +66,13 @@ Graph::shortest_path(const Node &start,
         }
     }
 
+    if (result.empty()) {
+        return std::nullopt;
+    }
+
     // build back the path
-    for (auto node{result.back()}; node != start; node = predecessors[node])
-        result.push_back(node);
+    while (result.back() != start)
+        result.push_back(predecessors[result.back()]);
 
     std::reverse(result.begin(), result.end());
     return result;
