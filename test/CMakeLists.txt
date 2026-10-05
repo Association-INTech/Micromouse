@@ -21,6 +21,8 @@ add_executable(test_hl
     test_hl.cpp
     ../src/hl/graph.cpp
     ../src/hl/maze.cpp
+    ../src/hl/curve.cpp
+    ../src/hl/trajectory.cpp
 )
 
 target_include_directories(test_hl PRIVATE ../include)
