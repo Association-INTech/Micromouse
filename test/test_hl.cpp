@@ -4,9 +4,7 @@
 #include <gtest/gtest.h>
 
 #include <cstddef>
-#include <iostream>
 #include <optional>
-#include <print>
 #include <unordered_set>
 #include <vector>
 
@@ -19,7 +17,7 @@ using namespace ratatech::hl;
 // Verify default initialization (boundary walls present, interior empty)
 TEST(Maze, DefaultState) {
     Maze maze;
-    constexpr size_t last = Maze::maze_size - 1;
+    constexpr size_t last = maze_size - 1;
 
     // Outer boundary walls at the corners
     EXPECT_TRUE(maze.get_wall(0, 0, Direction::Left));
@@ -63,7 +61,7 @@ TEST(Maze, WallReciprocityReverse) {
 // Re-adding perimeter walls must be a safe, idempotent operation
 TEST(Maze, OuterBoundarySafety) {
     Maze maze;
-    constexpr size_t last = Maze::maze_size - 1;
+    constexpr size_t last = maze_size - 1;
 
     maze.add_wall(0, 0, Direction::Up);
     maze.add_wall(0, 0, Direction::Left);
@@ -82,7 +80,7 @@ TEST(Maze, OuterBoundarySafety) {
 TEST(GraphNeighbors, CornerCells) {
     Maze maze;
     Graph graph(maze);
-    constexpr size_t last = Maze::maze_size - 1;
+    constexpr size_t last = maze_size - 1;
 
     auto top_left = graph.neighbors({0, 0});
     EXPECT_EQ(top_left.size(), 2u);

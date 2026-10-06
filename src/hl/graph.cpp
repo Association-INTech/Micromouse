@@ -38,8 +38,8 @@ Graph::shortest_path(const Node &start,
     to_process.push({start, 0});
 
     std::unordered_map<Node, int> distances;
-    for (size_t i{0}; i < Maze::maze_size; ++i)
-        for (size_t j{0}; j < Maze::maze_size; ++j)
+    for (size_t i{0}; i < maze_size; ++i)
+        for (size_t j{0}; j < maze_size; ++j)
             distances[Node(i, j)] = std::numeric_limits<int>::max();
     distances[start] = 0;
 

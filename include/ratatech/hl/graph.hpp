@@ -31,23 +31,22 @@ class Graph {
 
 } // namespace ratatech::hl
 
-using namespace ratatech::hl;
-
 namespace std {
 
-template <> struct hash<Graph::Node> {
-    size_t operator()(const Graph::Node &node) const noexcept {
-        return node.i * Maze::maze_size + node.j;
+template <> struct hash<ratatech::hl::Graph::Node> {
+    size_t operator()(const ratatech::hl::Graph::Node &node) const noexcept {
+        return node.i * ratatech::hl::maze_size + node.j;
     }
 };
 
-template <> struct formatter<Graph::Node> {
+template <> struct formatter<ratatech::hl::Graph::Node> {
     constexpr auto parse(format_parse_context &context) {
         return context.begin();
     }
 
     template <class FormatContext>
-    auto format(const Graph::Node &node, FormatContext &ctx) const {
+    auto format(const ratatech::hl::Graph::Node &node,
+                FormatContext &ctx) const {
         return std::format_to(ctx.out(), "Node({}, {})", node.i, node.j);
     }
 };

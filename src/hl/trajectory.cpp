@@ -2,7 +2,6 @@
 #include "ratatech/hl/curve.hpp"
 #include "ratatech/hl/graph.hpp"
 #include <ranges>
-#include <stdexcept>
 #include <variant>
 
 // some helper functions
