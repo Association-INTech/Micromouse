@@ -17,17 +17,19 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-add_executable(test_hl
-    test_hl.cpp
+include(GoogleTest)
+
+add_library(ratatech_hl STATIC
     ../src/hl/graph.cpp
     ../src/hl/maze.cpp
     ../src/hl/curve.cpp
     ../src/hl/trajectory.cpp
 )
+target_include_directories(ratatech_hl PUBLIC ../include)
+target_compile_options(ratatech_hl PRIVATE -Wall -Wextra)
 
-target_include_directories(test_hl PRIVATE ../include)
-target_compile_options(test_hl PRIVATE -Wall -Wextra)
-target_link_libraries(test_hl GTest::gtest_main)
-
-include(GoogleTest)
-gtest_discover_tests(test_hl)
+foreach(name IN ITEMS test_maze test_graph test_curve test_trajectory)
+    add_executable(${name} ${name}.cpp)
+    target_link_libraries(${name} PRIVATE ratatech_hl GTest::gtest_main)
+    gtest_discover_tests(${name})
+endforeach()
