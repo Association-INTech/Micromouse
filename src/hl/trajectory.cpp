@@ -20,17 +20,15 @@ auto state_visit(auto &curve, float time) {
 
 namespace ratatech::hl {
 
-Trajectory::Trajectory(const std::vector<Graph::Node> &path) {
+Trajectory::Trajectory(const std::vector<Graph::Node> &path)
+    : last_access_idx{0} {
     if (path.empty())
         return;
 
-    if (path.size() == 1) {
-        curves.push_back(CurveStraight(0, path.back(), path.back()));
-        return;
-    }
-
     Graph::Node old_node{path.front()};
     float old_end_time{0};
+
+    curves.push_back(CurveStart(old_end_time, old_node));
 
     for (const Graph::Node &new_node : path | std::views::drop(1)) {
         curves.push_back(CurveStraight(old_end_time, old_node, new_node));
@@ -38,29 +36,20 @@ Trajectory::Trajectory(const std::vector<Graph::Node> &path) {
         old_node = new_node;
         old_end_time = end_time_visit(curves.back());
     }
+
+    curves.push_back(CurveEnd(old_end_time, old_node));
 }
 
 StateVector Trajectory::state(float time) {
-    auto curve{curves.begin() + last_access_idx};
-
-    float start_time{start_time_visit(*curve)};
-    float end_time{end_time_visit(*curve)};
-
     // change last_access_idx if necessary
-
-    while (time < start_time) {
+    while (time < start_time_visit(curves[last_access_idx])) {
         --last_access_idx;
-        curve = curves.begin() + last_access_idx;
-        start_time = start_time_visit(*curve);
     }
-
-    while (time > end_time) {
+    while (time > end_time_visit(curves[last_access_idx])) {
         ++last_access_idx;
-        curve = curves.begin() + last_access_idx;
-        start_time = start_time_visit(*curve);
     }
 
-    return state_visit(*curve, time);
+    return state_visit(curves[last_access_idx], time);
 }
 
 } // namespace ratatech::hl

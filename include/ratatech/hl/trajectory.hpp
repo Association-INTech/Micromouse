@@ -15,7 +15,7 @@ class Trajectory {
     StateVector state(float time);
 
   private:
-    std::vector<std::variant<CurveStraight>> curves;
+    std::vector<std::variant<CurveStart, CurveEnd, CurveStraight>> curves;
     size_t last_access_idx;
 };
 
