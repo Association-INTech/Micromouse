@@ -1,20 +1,18 @@
 #include "ratatech/hl/graph.hpp"
 #include "ratatech/hl/maze.hpp"
 #include <algorithm>
-#include <limits>
 #include <optional>
-#include <print>
 #include <queue>
 #include <unordered_map>
 #include <utility>
 
 namespace ratatech::hl {
 
-Graph::Graph(const Maze &maze) : maze_{maze} {}
+template <int Rank> Graph<Rank>::Graph(const Maze &maze) : maze_{maze} {}
 
-std::vector<std::pair<Graph::Node, int>>
-Graph::neighbors(const Node &node) const {
-    std::vector<std::pair<Graph::Node, int>> neighbors{};
+template <int Rank>
+std::vector<Edge<Rank>> Graph<Rank>::neighbors(const Node<Rank> &node) const {
+    std::vector<std::pair<Node<Rank>, int>> neighbors{};
 
     for (auto dir : all_directions) {
         auto [delta_i, delta_j] = direction_to_delta(dir);
@@ -26,10 +24,11 @@ Graph::neighbors(const Node &node) const {
     return neighbors;
 }
 
-std::optional<std::vector<Graph::Node>>
-Graph::shortest_path(const Node &start,
-                     const std::unordered_set<Node> &end) const {
-    using Entry = std::pair<Node, int>;
+template <int Rank>
+std::optional<std::vector<Edge<Rank>>>
+Graph<Rank>::shortest_path(const Node<Rank> &start,
+                           const std::unordered_set<Node<Rank>> &end) const {
+    using Entry = std::pair<Node<Rank>, int>;
     std::priority_queue<Entry, std::vector<Entry>,
                         decltype([](const Entry &a, const Entry &b) {
                             return a.second > b.second;
@@ -37,15 +36,11 @@ Graph::shortest_path(const Node &start,
         to_process;
     to_process.push({start, 0});
 
-    std::unordered_map<Node, int> distances;
-    for (size_t i{0}; i < maze_size; ++i)
-        for (size_t j{0}; j < maze_size; ++j)
-            distances[Node(i, j)] = std::numeric_limits<int>::max();
+    std::unordered_map<Node<Rank>, Node<Rank>> predecessors;
+    std::unordered_map<Node<Rank>, int> distances;
     distances[start] = 0;
 
-    std::unordered_map<Node, Node> predecessors;
-
-    std::vector<Node> result;
+    std::vector<Node<Rank>> result;
 
     for (; !to_process.empty(); to_process.pop()) {
         auto [node, distance]{to_process.top()};

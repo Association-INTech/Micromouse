@@ -1,21 +1,20 @@
 #pragma once
 
 #include "ratatech/hl/curve.hpp"
-#include "ratatech/hl/graph.hpp"
 #include <cstddef>
-#include <variant>
+#include <optional>
 #include <vector>
 
 namespace ratatech::hl {
 
-class Trajectory {
+template <int Rank> class Trajectory {
   public:
-    explicit Trajectory(const std::vector<Graph::Node> &path);
+    explicit Trajectory(const std::vector<Edge<Rank>> &path);
 
-    StateVector state(float time);
+    std::optional<StateVector> state(float time);
 
   private:
-    std::vector<std::variant<CurveStart, CurveEnd, CurveStraight>> curves;
+    std::vector<Curve<Rank>> curves;
     size_t last_access_idx;
 };
 

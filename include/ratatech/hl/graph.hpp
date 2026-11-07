@@ -1,51 +1,44 @@
 #pragma once
 
+#include "ratatech/hl/graph_utils.hpp"
 #include "ratatech/hl/maze.hpp"
 #include <cstddef>
-#include <format>
-#include <optional>
 #include <unordered_set>
 #include <vector>
 
 namespace ratatech::hl {
 
-class Graph {
-  public:
-    struct Node {
-        size_t i;
-        size_t j;
-
-        bool operator==(const Node &other) const = default;
-    };
-
-    explicit Graph(const Maze &maze);
-
-    std::vector<std::pair<Node, int>> neighbors(const Node &node) const;
-
-    std::optional<std::vector<Node>>
-    shortest_path(const Node &start, const std::unordered_set<Node> &end) const;
-
+template <int Rank> class Graph {
   private:
     const Maze &maze_;
+
+  public:
+    explicit Graph(const Maze &maze);
+
+    std::vector<Edge<Rank>> neighbors(const Node<Rank> &node) const;
+
+    std::optional<std::vector<Edge<Rank>>>
+    shortest_path(const Node<Rank> &start,
+                  const std::unordered_set<Node<Rank>> &end) const;
 };
 
 } // namespace ratatech::hl
 
 namespace std {
 
-template <> struct hash<ratatech::hl::Graph::Node> {
-    size_t operator()(const ratatech::hl::Graph::Node &node) const noexcept {
+template <int Rank> struct hash<ratatech::hl::Node<Rank>> {
+    size_t operator()(const ratatech::hl::Node<Rank> &node) const noexcept {
         return node.i * ratatech::hl::maze_size + node.j;
     }
 };
 
-template <> struct formatter<ratatech::hl::Graph::Node> {
+template <int Rank> struct formatter<ratatech::hl::Node<Rank>> {
     constexpr auto parse(format_parse_context &context) {
         return context.begin();
     }
 
     template <class FormatContext>
-    auto format(const ratatech::hl::Graph::Node &node,
+    auto format(const ratatech::hl::Node<Rank> &node,
                 FormatContext &ctx) const {
         return std::format_to(ctx.out(), "Node({}, {})", node.i, node.j);
     }
