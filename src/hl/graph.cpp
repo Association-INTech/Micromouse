@@ -12,13 +12,21 @@ template <int Rank> Graph<Rank>::Graph(const Maze &maze) : maze_{maze} {}
 
 template <int Rank>
 std::vector<Edge<Rank>> Graph<Rank>::neighbors(const Node<Rank> &node) const {
-    std::vector<std::pair<Node<Rank>, int>> neighbors{};
+    std::vector<Edge<Rank>> neighbors;
 
     for (auto dir : all_directions) {
         auto [delta_i, delta_j] = direction_to_delta(dir);
+        auto last_coord{node.coordinates.back()};
 
-        if (!maze_.get_wall(node.i, node.j, dir))
-            neighbors.push_back({{node.i + delta_i, node.j + delta_j}, 1});
+        if (!maze_.get_wall(node.i, node.j, dir)) {
+            Edge edge{.coordinates = node.coordinates, .cost = 1};
+
+            // add the last coordinate to the edge
+            edge.coordinates.back() = {.i = last_coord.i + delta_i,
+                                       .j = last_coord.j + delta_j};
+
+            neighbors.push_back(edge);
+        }
     }
 
     return neighbors;
