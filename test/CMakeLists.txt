@@ -22,7 +22,8 @@ include(GoogleTest)
 add_library(ratatech_hl STATIC
     ../src/hl/graph.cpp
     ../src/hl/maze.cpp
-    ../src/hl/curve.cpp
+    #../src/hl/curve.cpp
+    ../src/hl/curve_rank1.cpp
     ../src/hl/trajectory.cpp
 )
 target_include_directories(ratatech_hl PUBLIC ../include)
