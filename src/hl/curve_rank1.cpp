@@ -14,14 +14,14 @@ CurveStraight::CurveStraight(const Edge<1> &edge, float start_time)
                               static_cast<float>(edge.coordinates[1].j)) *
                   cell_size / speed,
       },
-      start_x_{edge.coordinates[1].i * cell_size},
-      start_y_{edge.coordinates[1].j * cell_size},
-      end_x_{edge.coordinates[0].i * cell_size},
-      end_y_{edge.coordinates[0].j * cell_size},
-      theta_{std::atan2f(static_cast<float>(edge.coordinates[0].j) -
-                             static_cast<float>(edge.coordinates[1].j),
-                         static_cast<float>(edge.coordinates[0].i) -
-                             static_cast<float>(edge.coordinates[1].i))} {}
+      start_x_{edge.coordinates[0].i * cell_size},
+      start_y_{edge.coordinates[0].j * cell_size},
+      end_x_{edge.coordinates[1].i * cell_size},
+      end_y_{edge.coordinates[1].j * cell_size},
+      theta_{std::atan2f(static_cast<float>(edge.coordinates[1].j) -
+                             static_cast<float>(edge.coordinates[0].j),
+                         static_cast<float>(edge.coordinates[1].i) -
+                             static_cast<float>(edge.coordinates[0].i))} {}
 
 StateVector CurveStraight::state(float time) const {
     float progress = (time - start_time() - stop_duration) /
