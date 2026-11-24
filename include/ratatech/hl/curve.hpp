@@ -23,13 +23,13 @@ class Curve : public detail::curve_alternatives<Rank>::type {
     using Base::Base;
 
   public:
-    auto start_time() {
+    auto start_time() const {
         return std::visit([](const auto &x) { return x.start_time(); }, *this);
     }
-    auto end_time() {
+    auto end_time() const {
         return std::visit([](const auto &x) { return x.end_time(); }, *this);
     }
-    auto state(float time) {
+    auto state(float time) const {
         return std::visit([time](const auto &x) { return x.state(time); },
                           *this);
     }

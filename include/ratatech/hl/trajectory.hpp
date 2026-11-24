@@ -11,11 +11,12 @@ template <int Rank> class Trajectory {
   public:
     explicit Trajectory(const std::vector<Edge<Rank>> &path);
 
-    std::optional<StateVector> state(float time);
+    std::optional<StateVector> state(float time) const;
 
   private:
     std::vector<Curve<Rank>> curves;
-    size_t last_access_idx;
 };
 
 } // namespace ratatech::hl
+
+#include "ratatech/hl/trajectory.tpp"
