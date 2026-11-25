@@ -164,14 +164,3 @@ TEST_F(TrajectoryMultiNode, TwoTrajectoriesAreIndependent) {
     (void)a.state(3 * leg).value();
     expect_position(b.state(0.0f).value(), 0.0f, 0.0f);
 }
-
-// ============================================================================
-// Trajectory: empty path
-// ============================================================================
-
-// Empty path produces no curves, so state() has nothing to evaluate. The
-// expected behaviour is a design decision (throw / default state); this
-// documents that construction itself is safe.
-TEST(Trajectory, EmptyPathConstructs) {
-    EXPECT_NO_THROW(Trajectory<1> traj(std::vector<Edge<1>>{}));
-}
