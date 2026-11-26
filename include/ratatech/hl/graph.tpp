@@ -22,8 +22,8 @@ std::vector<Edge<Rank>> Graph<Rank>::neighbors(const Node<Rank> &node) const {
         auto last_coord{node.coordinates.back()};
 
         if (!maze_.get_wall(last_coord.i, last_coord.j, dir)) {
-            last_coord = {.i = last_coord.i + delta_i,
-                          .j = last_coord.j + delta_j};
+            last_coord.i += delta_i;
+            last_coord.j += delta_j;
 
             neighbors.emplace_back(node, last_coord, 1);
         }
@@ -104,7 +104,7 @@ size_t std::hash<ratatech::hl::Node<Rank>>::operator()(
     uint32_t hash{FNV_offset_basis};
 
     auto add_bytes{[&](size_t value) {
-        for (int i{0}; i < sizeof(value); ++i) {
+        for (size_t i{0}; i < sizeof(value); ++i) {
             auto byte{static_cast<uint8_t>((value >> (8 * i)) & 0xff)};
             hash ^= byte;
             hash *= FNV_prime;

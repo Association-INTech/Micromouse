@@ -447,8 +447,9 @@ TEST(ShortestPath, LengthIsSymmetricBetweenEndpoints) {
     auto ab = graph.shortest_path(a, {b});
     auto ba = graph.shortest_path(b, {a});
     ASSERT_EQ(ab.has_value(), ba.has_value());
-    if (ab)
+    if (ab) {
         EXPECT_EQ(ab->size(), ba->size());
+    }
 }
 
 // --- validity

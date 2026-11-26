@@ -20,17 +20,26 @@ enable_testing()
 include(GoogleTest)
 
 add_library(ratatech_hl STATIC
-    # ../src/hl/graph.cpp
     ../src/hl/maze.cpp
-    # ../src/hl/curve.cpp
     ../src/hl/curve_rank1.cpp
-    # ../src/hl/trajectory.cpp
 )
 target_include_directories(ratatech_hl PUBLIC ../include)
-target_compile_options(ratatech_hl PRIVATE -Wall -Wextra)
+
+if(MSVC)
+    target_compile_options(ratatech_hl PRIVATE /W4 /permissive-)
+else()
+    target_compile_options(ratatech_hl PRIVATE
+                           -Wall -Wextra -Wpedantic)
+endif()
 
 foreach(name IN ITEMS test_maze test_graph test_curve test_trajectory)
     add_executable(${name} ${name}.cpp)
     target_link_libraries(${name} PRIVATE ratatech_hl GTest::gtest_main)
     gtest_discover_tests(${name})
+    if(MSVC)
+        target_compile_options(${name} PRIVATE /W4 /permissive-)
+    else()
+        target_compile_options(${name} PRIVATE
+                               -Wall -Wextra -Wpedantic)
+    endif()
 endforeach()

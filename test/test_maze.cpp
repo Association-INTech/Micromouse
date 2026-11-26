@@ -2,7 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include <array>
 #include <cstddef>
 #include <utility>
 
@@ -104,9 +103,10 @@ TEST(Maze, AllInteriorEdgesOpenByDefault) {
     for (size_t i = 0; i < maze_size; ++i)
         for (size_t j = 0; j < maze_size; ++j)
             for (Direction d : all_directions)
-                if (has_neighbor(i, j, d))
+                if (has_neighbor(i, j, d)) {
                     EXPECT_FALSE(maze.get_wall(i, j, d))
                         << "cell (" << i << "," << j << ")";
+                }
 }
 
 TEST(Maze, CornerCellsHaveExactlyTwoWallsByDefault) {
@@ -304,7 +304,8 @@ TEST(Maze, OuterBoundarySafety) {
     EXPECT_TRUE(maze.get_wall(maze_size - 1, maze_size - 1, Direction::Right));
 }
 
-// Re-adding the whole perimeter must not create or remove any other wall.
+// Re-adding the whole perimeter must not create or remove any other
+// wall.
 TEST(Maze, ReAddingPerimeterChangesNothingElse) {
     Maze maze;
     for (size_t k = 0; k < maze_size; ++k) {

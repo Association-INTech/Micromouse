@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ratatech/hl/curve.hpp"
-#include <cstddef>
 #include <optional>
 #include <vector>
 

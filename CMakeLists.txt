@@ -22,11 +22,15 @@ target_sources(${CMAKE_PROJECT_NAME}
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/ll/motor_pid.cpp
 
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/hl/maze.cpp
-    # PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/hl/graph.cpp
-    # PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/hl/trajectory.cpp
-    # PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/hl/curve.cpp
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/hl/curve_rank1.cpp
 )
+
+if(MSVC)
+    target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE /W4 /permissive-)
+else()
+    target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE
+                           -Wall -Wextra -Wpedantic)
+endif()
 
 add_custom_target(flash
     openocd
